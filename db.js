@@ -11,7 +11,7 @@ function initDB(db) {
                 db.run("CREATE TABLE tweet (userId INTEGER, tweetText TEXT, time DATETIME, parentTweetId INTEGER)");
                 db.run("CREATE TABLE userFollows (followsUserId INTEGER, followerUserId INTEGER)");
                 db.run("CREATE TABLE tweetReplies (tweetId INTEGER, replyText TEXT, replyUserId INTEGER)");
-                db.run("CREATE TABLE tweetLikes (likeUserId INTEGER)");
+                db.run("CREATE TABLE tweetLikes (tweetId INTEGER, likeUserId INTEGER)");
 
                 console.log("tables have been created");
             }
