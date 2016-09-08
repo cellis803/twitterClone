@@ -45,4 +45,6 @@ app.listen(8080, function () {
     tweeterdb.createTweet(db, 1, "First tweet message", timestamp, null);
 
     tweeterdb.addFollow(db, 1, 2);
+
+    tweeterdb.replyToTweet(db, 1, 'this is my reply', 3);
 });

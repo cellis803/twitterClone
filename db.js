@@ -77,7 +77,22 @@ function getTweetStreamByUser(userId, db) {
          }); 
 }
 
-function replyToTweet() {}
+function replyToTweet(db, tweetId, replyText, userId) {
+        return new Promise(
+        (resolve, reject) => {
+            db.serialize(function () {
+                var stmt = db.prepare("INSERT INTO tweetReplies VALUES (?, ?, ?)");
+
+                stmt.run(tweetId, replyText, userId, function (error) {
+                    if (error)
+                        console.log(error);
+                });
+
+                stmt.finalize();
+            });
+        });
+
+}
 
 function getReplies() {}
 
@@ -90,3 +105,4 @@ module.exports.createUser = createUser;
 module.exports.createTweet = createTweet;
 module.exports.addFollow = addFollow;
 module.exports.getTweetStreamByUser = getTweetStreamByUser;
+module.exports.replyToTweet = replyToTweet;
