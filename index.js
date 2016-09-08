@@ -25,7 +25,7 @@ app.get('/home', function (request, response) {
         val => {
             var textOut = '';
             for (row in val) {
-                textOut = textOut + val[row].tweetText + " - " + val[row].name + " - " + val[row].time + "<br/>";
+                textOut = textOut + val[row].tweetText + " - " + val[row].name + " - " + val[row].time + " (" + val[row].likeCount + ") <br/>";
             }
             response.send(textOut);
         }).catch(
@@ -52,4 +52,9 @@ app.listen(8080, function () {
             //handle all errors
             console.log(err);
         });
+
+    tweeterdb.addFollow(db, 1, 2);
+
+    tweeterdb.replyToTweet(db, 1, 'this is my reply', 3);
+    tweeterdb.likeTweet(db, 1, 3);
 });

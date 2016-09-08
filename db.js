@@ -17,6 +17,7 @@ function initDB(db) {
 
                     console.log("tables have been created");
                 }
+                resolve();
             });
         });
     });
@@ -75,6 +76,7 @@ function getTweetStreamByUser(userId, db) {
          (resolve, reject) => {
             db.serialize(function () {
                 db.all("SELECT t.rowId as rowid, t.tweetText as tweetText, u.name as name, t.time as time " + 
+                        ", (select count(*) from tweetLikes tl where tl.tweetId = t.rowid) as likeCount " + 
                        "FROM tweet t " + 
                        "inner join user u on u.rowid = t.userId " +
                        "where t.userId = " + userId + " or t.userId in (" +
@@ -86,7 +88,22 @@ function getTweetStreamByUser(userId, db) {
          }); 
 }
 
-function replyToTweet() {}
+function replyToTweet(db, tweetId, replyText, userId) {
+        return new Promise(
+        (resolve, reject) => {
+            db.serialize(function () {
+                var stmt = db.prepare("INSERT INTO tweetReplies VALUES (?, ?, ?)");
+
+                stmt.run(tweetId, replyText, userId, function (error) {
+                    if (error)
+                        console.log(error);
+                });
+
+                stmt.finalize();
+            });
+        });
+
+}
 
 function getReplies(tweetId, db) {
      return new Promise(
@@ -101,12 +118,27 @@ function getReplies(tweetId, db) {
          }); 
 }
 
-function likeTweet() {}
+function likeTweet(db, tweetId, userId) {
+        return new Promise(
+        (resolve, reject) => {
+            db.serialize(function () {
+                var stmt = db.prepare("INSERT INTO tweetLikes VALUES (?, ?)");
 
-function retweet() {}
+                stmt.run(tweetId, userId, function (error) {
+                    if (error)
+                        console.log(error);
+                });
+
+                stmt.finalize();
+            });
+        });
+
+}
 
 module.exports.initDB = initDB;
 module.exports.createUser = createUser;
 module.exports.createTweet = createTweet;
 module.exports.addFollow = addFollow;
 module.exports.getTweetStreamByUser = getTweetStreamByUser;
+module.exports.replyToTweet = replyToTweet;
+module.exports.likeTweet = likeTweet;
