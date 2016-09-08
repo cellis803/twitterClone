@@ -1,24 +1,25 @@
 var express = require('express');
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('test.db');
-var initDB = require('./db').initDB;
-var createUser = require('./db').createUser;
-var getTweetStreamByUser = require('./db').getTweetStreamByUser;
+var tweeterdb = require('./db.js');
+var moment = require('moment');
 var app = express();
 var path = require("path");
 
+
 app.get('/', function (request, response) {
     response.sendFile(path.join(__dirname + '/home.html'));
+
 });
 
 app.get('/createUser', function (request, response) {
-    createUser(db, request.query.name);
+    tweeterdb.createUser(db, request.query.name);
     response.send('Welcome to Twitter clone, ' + request.query.name + "!");
 });
 
 app.get('/home', function (request, response) {
     var userId = 4;
-    var p = getTweetStreamByUser(userId, db);
+    var p = tweeterdb.getTweetStreamByUser(userId, db);
 
     p.then(
         val => {
@@ -36,6 +37,11 @@ app.get('/home', function (request, response) {
 
 app.listen(8080, function () {
     console.log('Example app listening on port 8080...');
-    initDB(db);
+
+    tweeterdb.initDB(db);
+    tweeterdb.createUser(db, "Joe");
+
+    var timestamp = moment().format('YYYY-MM-DD H:mm:ss');
+    tweeterdb.createTweet(db, 1, "First tweet message", timestamp, null);
 
 });

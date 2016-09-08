@@ -13,7 +13,8 @@
     "chai-as-promised": "^5.3.0",
     "express": "^4.14.0",
     "mocha": "^3.0.2",
-    "sqlite": "^2.2.0",
+    "moment": "^2.14.1",
+    "node-datetime": "^1.0.0",
     "sqlite3": "^3.1.4"
   }
 }
