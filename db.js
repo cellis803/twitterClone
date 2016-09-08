@@ -38,4 +38,12 @@ function initDB(db) {
     });
 }
 
+function createUser() {}
+
+function createTweet() {}
+
+function addFollow() {}
+
+function getTweetStreamByUser() {}
+
 exports.initDB = initDB;
