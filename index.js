@@ -1,6 +1,6 @@
 var express = require('express');
 var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('test2.db');
+var db = new sqlite3.Database('test.db');
 var initDB = require('./db').initDB;
 var app = express();
 
