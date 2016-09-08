@@ -38,4 +38,27 @@ function initDB(db) {
     });
 }
 
+function createUser(db, name) {
+     db.serialize(function () {
+        var stmt = db.prepare("INSERT INTO user VALUES (?)");
+
+        stmt.run(name, function (error) {
+            if (error)
+                console.log(error);
+        });
+
+        stmt.finalize();
+     });
+}
+
+function createTweet() {}
+
+function addFollow() {}
+
+function getTweetStreamByUser() {}
+
 exports.initDB = initDB;
+exports.createUser = createUser;
+exports.createTweet = createTweet;
+exports.addFollow = addFollow;
+exports.getTweetStreamByUser = getTweetStreamByUser;
