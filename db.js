@@ -77,6 +77,12 @@ function getTweetStreamByUser(userId, db) {
          }); 
 }
 
+function replyToTweet() {}
+
+function likeTweet() {}
+
+function retweet() {}
+
 module.exports.initDB = initDB;
 module.exports.createUser = createUser;
 module.exports.createTweet = createTweet;
