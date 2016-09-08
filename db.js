@@ -39,23 +39,37 @@ function initDB(db) {
 }
 
 function createUser(db, name) {
-     db.serialize(function () {
-        var stmt = db.prepare("INSERT INTO user VALUES (?)");
+        return new Promise(
+        (resolve, reject) => {
+            db.serialize(function () {
+                var stmt = db.prepare("INSERT INTO user VALUES (?)");
 
-        stmt.run(name, function (error) {
-            if (error)
-                console.log(error);
+                stmt.run(name, function (error) {
+                    if (error)
+                        console.log(error);
+                });
+
+                stmt.finalize();
+            });
         });
-
-        stmt.finalize();
-     });
 }
 
 function createTweet() {}
 
 function addFollow() {}
 
-function getTweetStreamByUser() {}
+function getTweetStreamByUser(userId, db) {
+     return new Promise(
+         (resolve, reject) => {
+            db.serialize(function () {
+            
+                db.all("SELECT t.rowId as rowid, t.tweetText as tweetText, u.name as name FROM tweet t inner join user u on u.rowid = t.userId and t.userId = " + userId, function (err, rows) {
+                    resolve(rows);
+                });
+            });
+         });
+    
+}
 
 exports.initDB = initDB;
 exports.createUser = createUser;
