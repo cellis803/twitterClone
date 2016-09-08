@@ -18,14 +18,14 @@ app.get('/createUser', function (request, response) {
 });
 
 app.get('/home', function (request, response) {
-    var userId = 4;
+    var userId = 1;
     var p = tweeterdb.getTweetStreamByUser(userId, db);
 
     p.then(
         val => {
             var textOut = '';
             for (row in val) {
-                textOut = textOut + val[row].tweetText + "<br/>";
+                textOut = textOut + val[row].tweetText + " - " + val[row].name + " - " + val[row].time + "<br/>";
             }
             response.send(textOut);
         }).catch(

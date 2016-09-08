@@ -9,7 +9,7 @@ function initDB(db) {
 
                 db.run("CREATE TABLE user (name TEXT)");
                 db.run("CREATE TABLE tweet (userId INTEGER, tweetText TEXT, time DATETIME, parentTweetId INTEGER)");
-                db.run("CREATE TABLE userFollows (followsUserId INTEGER)");
+                db.run("CREATE TABLE userFollows (followsUserId INTEGER, followerUserId INTEGER)");
                 db.run("CREATE TABLE tweetReplies (tweetId INTEGER, replyText TEXT, replyUserId INTEGER)");
                 db.run("CREATE TABLE tweetLikes (likeUserId INTEGER)");
 
@@ -54,7 +54,12 @@ function getTweetStreamByUser(userId, db) {
      return new Promise(
          (resolve, reject) => {
             db.serialize(function () {
-                db.all("SELECT t.rowId as rowid, t.tweetText as tweetText, u.name as name FROM tweet t inner join user u on u.rowid = t.userId and t.userId = " + userId, function (err, rows) {
+                db.all("SELECT t.rowId as rowid, t.tweetText as tweetText, u.name as name, t.time as time " + 
+                       "FROM tweet t " + 
+                       "inner join user u on u.rowid = t.userId " +
+                       "where t.userId = " + userId + " or t.userId in (" +
+                            "select f.followsUserId from userFollows f where f.followerUserId = " + userId + 
+                       ")" , function (err, rows) {
                     resolve(rows);
                 });
             });
