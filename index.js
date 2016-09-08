@@ -25,7 +25,7 @@ app.get('/home', function (request, response) {
         val => {
             var textOut = '';
             for (row in val) {
-                textOut = textOut + val[row].tweetText;
+                textOut = textOut + val[row].tweetText + "<br/>";
             }
             response.send(textOut);
         }).catch(

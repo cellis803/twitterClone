@@ -3,10 +3,6 @@ function initDB(db) {
         db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='user'", function (error, row) {
             if (row !== undefined) {
                 console.log("table exists. cleaning existing records");
-                // db.run("DELETE FROM lorem", function (error) {
-                //     if (error)
-                //         console.log(error);
-                // });
             }
             else {
                 console.log("creating tables");
@@ -20,21 +16,6 @@ function initDB(db) {
                 console.log("tables have been created");
             }
         });
-
-        // var stmt = db.prepare("INSERT INTO lorem VALUES (?)");
-        // for (var i = 0; i < 10; i++) {
-        //     stmt.run("Ipsum " + i, function (error) {
-        //         if (error)
-        //             console.log(error);
-        //     });
-        // }
-        // stmt.finalize();
-
-        // db.each("SELECT rowid AS id, info FROM lorem", function (err, row) {
-        //     console.log(row.id + ": " + row.info);
-        // });
-
-        //db.close();
     });
 }
 
@@ -84,13 +65,11 @@ function getTweetStreamByUser(userId, db) {
      return new Promise(
          (resolve, reject) => {
             db.serialize(function () {
-            
                 db.all("SELECT t.rowId as rowid, t.tweetText as tweetText, u.name as name FROM tweet t inner join user u on u.rowid = t.userId and t.userId = " + userId, function (err, rows) {
                     resolve(rows);
                 });
             });
-         });
-    
+         }); 
 }
 
 module.exports.initDB = initDB;
