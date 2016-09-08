@@ -48,7 +48,18 @@ function createTweet(db, userid, text, timestamp, parentid) {
      });
 }
 
-function addFollow() {}
+function addFollow(db, userid, followerid) {
+    db.serialize(function () {
+        var stmt = db.prepare("INSERT INTO userFollows VALUES (?, ?)");
+
+        stmt.run(userid, followerid, function (error) {
+            if (error)
+                console.log(error);
+        });
+
+        stmt.finalize();
+     });
+}
 
 function getTweetStreamByUser(userId, db) {
      return new Promise(
