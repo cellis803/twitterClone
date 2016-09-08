@@ -79,6 +79,8 @@ function getTweetStreamByUser(userId, db) {
 
 function replyToTweet() {}
 
+function getReplies() {}
+
 function likeTweet() {}
 
 function retweet() {}
