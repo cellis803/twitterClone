@@ -38,7 +38,18 @@ function initDB(db) {
     });
 }
 
-function createUser() {}
+function createUser(db, name) {
+     db.serialize(function () {
+        var stmt = db.prepare("INSERT INTO user VALUES (?)");
+
+        stmt.run(name, function (error) {
+            if (error)
+                console.log(error);
+        });
+
+        stmt.finalize();
+     });
+}
 
 function createTweet() {}
 
