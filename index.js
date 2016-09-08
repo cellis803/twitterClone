@@ -28,4 +28,6 @@ app.listen(8080, function() {
 
     var timestamp = moment().format('YYYY-MM-DD H:mm:ss');
     tweeterdb.createTweet(db, 1, "First tweet message", timestamp, null);
+
+    tweeterdb.addFollow(db, 1, 2);
 });
