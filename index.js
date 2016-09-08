@@ -47,4 +47,5 @@ app.listen(8080, function () {
     tweeterdb.addFollow(db, 1, 2);
 
     tweeterdb.replyToTweet(db, 1, 'this is my reply', 3);
+    tweeterdb.likeTweet(db, 1, 3);
 });

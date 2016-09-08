@@ -96,7 +96,22 @@ function replyToTweet(db, tweetId, replyText, userId) {
 
 function getReplies() {}
 
-function likeTweet() {}
+function likeTweet(db, tweetId, userId) {
+        return new Promise(
+        (resolve, reject) => {
+            db.serialize(function () {
+                var stmt = db.prepare("INSERT INTO tweetLikes VALUES (?, ?)");
+
+                stmt.run(tweetId, userId, function (error) {
+                    if (error)
+                        console.log(error);
+                });
+
+                stmt.finalize();
+            });
+        });
+
+}
 
 function retweet() {}
 
@@ -106,3 +121,4 @@ module.exports.createTweet = createTweet;
 module.exports.addFollow = addFollow;
 module.exports.getTweetStreamByUser = getTweetStreamByUser;
 module.exports.replyToTweet = replyToTweet;
+module.exports.likeTweet = likeTweet;
