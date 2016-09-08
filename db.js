@@ -66,6 +66,7 @@ function getTweetStreamByUser(userId, db) {
          (resolve, reject) => {
             db.serialize(function () {
                 db.all("SELECT t.rowId as rowid, t.tweetText as tweetText, u.name as name, t.time as time " + 
+                        ", (select count(*) from tweetLikes tl where tl.tweetId = t.rowid) as likeCount " + 
                        "FROM tweet t " + 
                        "inner join user u on u.rowid = t.userId " +
                        "where t.userId = " + userId + " or t.userId in (" +
