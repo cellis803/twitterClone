@@ -47,3 +47,7 @@ function addFollow() {}
 function getTweetStreamByUser() {}
 
 exports.initDB = initDB;
+exports.createUser = createUser;
+exports.createTweet = createTweet;
+exports.addFollow = addFollow;
+exports.getTweetStreamByUser = getTweetStreamByUser;
