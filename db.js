@@ -28,11 +28,15 @@ function createUser(db, name) {
                 var stmt = db.prepare("INSERT INTO user VALUES (?)");
 
                 stmt.run(name, function (error) {
-                    if (error)
+                    if (error) {
                         console.log(error);
+                        reject(error);
+                    }
+                        
                 });
 
                 stmt.finalize();
+                resolve();
             });
         });
 }
@@ -44,11 +48,14 @@ function createTweet(db, userid, text, timestamp, parentid) {
                 var stmt = db.prepare("INSERT INTO tweet VALUES (?, ?, ?, ?)");
 
                 stmt.run(userid, text, timestamp, parentid, function (error) {
-                    if (error)
+                    if (error) {
                         console.log(error);
+                        reject(error);
+                    }
                 });
 
                 stmt.finalize();
+                resolve();
             });
      });
 
@@ -61,11 +68,14 @@ function addFollow(db, userid, followerid) {
                 var stmt = db.prepare("INSERT INTO userFollows VALUES (?, ?)");
 
                 stmt.run(userid, followerid, function (error) {
-                    if (error)
+                    if (error) {
                         console.log(error);
+                        reject(error);
+                    }
                 });
 
                 stmt.finalize();
+                resolve();
             });
      });
 }
@@ -94,11 +104,14 @@ function replyToTweet(db, tweetId, replyText, userId) {
                 var stmt = db.prepare("INSERT INTO tweetReplies VALUES (?, ?, ?)");
 
                 stmt.run(tweetId, replyText, userId, function (error) {
-                    if (error)
+                    if (error) {
                         console.log(error);
+                        reject(error);
+                    }
                 });
 
                 stmt.finalize();
+                resolve();
             });
         });
 
@@ -124,11 +137,14 @@ function likeTweet(db, tweetId, userId) {
                 var stmt = db.prepare("INSERT INTO tweetLikes VALUES (?, ?)");
 
                 stmt.run(tweetId, userId, function (error) {
-                    if (error)
+                    if (error) {
                         console.log(error);
+                        reject(error);
+                    }
                 });
 
                 stmt.finalize();
+                resolve();
             });
         });
 
