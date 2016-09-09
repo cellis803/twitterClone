@@ -1,4 +1,6 @@
-function initDB(db) {
+var sqlite3 = require('sqlite3').verbose();
+var db = new sqlite3.Database('test.db');
+function initDB() {
 
     return new Promise(
         (resolve, reject) => {
@@ -21,7 +23,7 @@ function initDB(db) {
         });
 }
 
-function createUser(db, name) {
+function createUser(name) {
     return new Promise(
         (resolve, reject) => {
             db.serialize(function () {
@@ -41,7 +43,7 @@ function createUser(db, name) {
         });
 }
 
-function createTweet(db, userid, text, timestamp, parentid) {
+function createTweet(userid, text, timestamp, parentid) {
     return new Promise(
         (resolve, reject) => {
             db.serialize(function () {
@@ -61,7 +63,7 @@ function createTweet(db, userid, text, timestamp, parentid) {
 
 }
 
-function addFollow(db, userid, followerid) {
+function addFollow(userid, followerid) {
     return new Promise(
         (resolve, reject) => {
             db.serialize(function () {
@@ -80,7 +82,7 @@ function addFollow(db, userid, followerid) {
      });
 }
 
-function getTweetStreamByUser(userId, db) {
+function getTweetStreamByUser(userId) {
     return new Promise(
         (resolve, reject) => {
             db.serialize(function () {
@@ -97,7 +99,7 @@ function getTweetStreamByUser(userId, db) {
         });
 }
 
-function replyToTweet(db, tweetId, replyText, userId) {
+function replyToTweet(tweetId, replyText, userId) {
     return new Promise(
         (resolve, reject) => {
             db.serialize(function () {
@@ -117,7 +119,7 @@ function replyToTweet(db, tweetId, replyText, userId) {
 
 }
 
-function getReplies(tweetId, db) {
+function getReplies(tweetId) {
      return new Promise(
          (resolve, reject) => {
             db.serialize(function () {
@@ -130,7 +132,7 @@ function getReplies(tweetId, db) {
          });
 }
 
-function likeTweet(db, tweetId, userId) {
+function likeTweet(tweetId, userId) {
     return new Promise(
         (resolve, reject) => {
             db.serialize(function () {
