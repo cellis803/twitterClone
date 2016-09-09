@@ -1,18 +1,24 @@
 function initDB(db) {
-    db.serialize(function () {
 
+    return new Promise(
+        (resolve, reject) => {
+            db.serialize(function () {
 
-        console.log("creating tables");
+                console.log("creating tables");
 
-        db.run("CREATE TABLE IF NOT EXISTS user (name TEXT NOT NULL)");
-        db.run("CREATE TABLE IF NOT EXISTS tweet (userId INTEGER NOT NULL, tweetText TEXT NOT NULL, time DATETIME NOT NULL, parentTweetId INTEGER, FOREIGN KEY(userId) REFERENCES user(rowid))");
-        db.run("CREATE TABLE IF NOT EXISTS userFollows (followsUserId INTEGER NOT NULL, followerUserId INTEGER NOT NULL, PRIMARY KEY (followsUserId, followerUserId), FOREIGN KEY(followsUserId) REFERENCES user(rowid), FOREIGN KEY(followerUserId) REFERENCES user(rowid)) WITHOUT ROWID");
-        db.run("CREATE TABLE IF NOT EXISTS tweetReplies (tweetId INTEGER NOT NULL, replyText TEXT NOT NULL, replyUserId INTEGER NOT NULL, FOREIGN KEY(tweetId) REFERENCES tweet(rowid), FOREIGN KEY(replyUserId) REFERENCES user(rowid))");
-        db.run("CREATE TABLE IF NOT EXISTS tweetLikes (tweetId INTEGER NOT NULL, likeUserId INTEGER NOT NULL, FOREIGN KEY(tweetId) REFERENCES tweet(rowid), FOREIGN KEY(likeUserId) REFERENCES user(rowid))");
+                db.run("CREATE TABLE IF NOT EXISTS user (name TEXT NOT NULL)");
+                db.run("CREATE TABLE IF NOT EXISTS tweet (userId INTEGER NOT NULL, tweetText TEXT NOT NULL, time DATETIME NOT NULL, parentTweetId INTEGER, FOREIGN KEY(userId) REFERENCES user(rowid))");
+                db.run("CREATE TABLE IF NOT EXISTS userFollows (followsUserId INTEGER NOT NULL, followerUserId INTEGER NOT NULL, PRIMARY KEY (followsUserId, followerUserId), FOREIGN KEY(followsUserId) REFERENCES user(rowid), FOREIGN KEY(followerUserId) REFERENCES user(rowid)) WITHOUT ROWID");
+                db.run("CREATE TABLE IF NOT EXISTS tweetReplies (tweetId INTEGER NOT NULL, replyText TEXT NOT NULL, replyUserId INTEGER NOT NULL, FOREIGN KEY(tweetId) REFERENCES tweet(rowid), FOREIGN KEY(replyUserId) REFERENCES user(rowid))");
+                db.run("CREATE TABLE IF NOT EXISTS tweetLikes (tweetId INTEGER NOT NULL, likeUserId INTEGER NOT NULL, FOREIGN KEY(tweetId) REFERENCES tweet(rowid), FOREIGN KEY(likeUserId) REFERENCES user(rowid))");
 
-        console.log("tables have been created");
+                console.log("tables have been created");
 
-    });
+                resolve();
+
+            });
+
+        });
 }
 
 function createUser(db, name) {
@@ -32,29 +38,36 @@ function createUser(db, name) {
 }
 
 function createTweet(db, userid, text, timestamp, parentid) {
-    db.serialize(function () {
-        var stmt = db.prepare("INSERT INTO tweet VALUES (?, ?, ?, ?)");
+    return new Promise(
+        (resolve, reject) => {
+            db.serialize(function () {
+                var stmt = db.prepare("INSERT INTO tweet VALUES (?, ?, ?, ?)");
 
-        stmt.run(userid, text, timestamp, parentid, function (error) {
-            if (error)
-                console.log(error);
-        });
+                stmt.run(userid, text, timestamp, parentid, function (error) {
+                    if (error)
+                        console.log(error);
+                });
 
-        stmt.finalize();
-    });
+                stmt.finalize();
+            });
+     });
+
 }
 
 function addFollow(db, userid, followerid) {
-    db.serialize(function () {
-        var stmt = db.prepare("INSERT INTO userFollows VALUES (?, ?)");
+    return new Promise(
+        (resolve, reject) => {
+            db.serialize(function () {
+                var stmt = db.prepare("INSERT INTO userFollows VALUES (?, ?)");
 
-        stmt.run(userid, followerid, function (error) {
-            if (error)
-                console.log(error);
-        });
+                stmt.run(userid, followerid, function (error) {
+                    if (error)
+                        console.log(error);
+                });
 
-        stmt.finalize();
-    });
+                stmt.finalize();
+            });
+     });
 }
 
 function getTweetStreamByUser(userId, db) {
@@ -91,7 +104,18 @@ function replyToTweet(db, tweetId, replyText, userId) {
 
 }
 
-function getReplies() { }
+function getReplies(tweetId, db) {
+     return new Promise(
+         (resolve, reject) => {
+            db.serialize(function () {
+                db.all("SELECT r.rowId as rowid, r.replyText as tweetText, replyUserId as id " +
+                       "FROM tweetReplies r " +
+                       "where r.rowid = " + tweetId , function (err, rows) {
+                    resolve(rows);
+                });
+            });
+         });
+}
 
 function likeTweet(db, tweetId, userId) {
     return new Promise(
@@ -109,8 +133,6 @@ function likeTweet(db, tweetId, userId) {
         });
 
 }
-
-function retweet() { }
 
 module.exports.initDB = initDB;
 module.exports.createUser = createUser;

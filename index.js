@@ -38,11 +38,20 @@ app.get('/home', function (request, response) {
 app.listen(8080, function () {
     console.log('Example app listening on port 8080...');
 
-    tweeterdb.initDB(db);
-    tweeterdb.createUser(db, "Joe");
+    var p = tweeterdb.initDB(db);
+    p.then(
+        val => {
+            tweeterdb.createUser(db, "Joe");
 
-    var timestamp = moment().format('YYYY-MM-DD H:mm:ss');
-    tweeterdb.createTweet(db, 1, "First tweet message", timestamp, null);
+            var timestamp = moment().format('YYYY-MM-DD H:mm:ss');
+            tweeterdb.createTweet(db, 1, "First tweet message", timestamp, null);
+
+            tweeterdb.addFollow(db, 1, 2);
+        }).catch(
+        err => {
+            //handle all errors
+            console.log(err);
+        });
 
     tweeterdb.addFollow(db, 1, 2);
 
