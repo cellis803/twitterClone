@@ -25,7 +25,7 @@ app.get('/home', function (request, response) {
         val => {
             var textOut = '';
             for (row in val) {
-                textOut = textOut + val[row].tweetText + " - " + val[row].name + " - " + val[row].time + " (" + val[row].likeCount + ") <br/>";
+                textOut = textOut + val[row].tweetText + " - " + val[row].name + " - " + val[row].time + " (" + val[row].likeCount + ") <a href='/like'>Like</a><br/>";
             }
             response.send(textOut);
         }).catch(
