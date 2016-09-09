@@ -23,7 +23,8 @@ app.get('/home', function (request, response) {
         val => {
             var textOut = '';
             for (row in val) {
-                textOut = textOut + val[row].tweetText + " - " + val[row].name + " - " + val[row].time + " (" + val[row].likeCount + ") <a href='/like'>Like</a><br/>";
+                textOut += JSON.stringify(val[row]);
+                // textOut = textOut + val[row].tweetText + " - " + val[row].name + " - " + val[row].time + " (" + val[row].likeCount + ") <br/>";
             }
             response.send(textOut);
         }).catch(
@@ -45,14 +46,12 @@ app.listen(8080, function () {
             tweeterdb.createTweet(1, "First tweet message", timestamp, null);
 
             tweeterdb.addFollow(1, 2);
+            tweeterdb.replyToTweet(1, 'this is my reply', 3);
+            tweeterdb.likeTweet(1, 3);
+            tweeterdb.createTweet(2, "Second tweet message", timestamp, null);
         }).catch(
         err => {
             //handle all errors
             console.log(err);
-        });
-
-    tweeterdb.addFollow(1, 2);
-
-    tweeterdb.replyToTweet(1, 'this is my reply', 3);
-    tweeterdb.likeTweet(1, 3);
+        });    
 });
