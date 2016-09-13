@@ -1,4 +1,25 @@
+var userName = null;
+
 $(document).ready(function() {
+
+    $("#login").hide();
+    $("#twitterHome").hide();
+
+    $("#loginButton").click(function() {
+        userName = $("#login").text();
+
+        $("#login").hide();
+        $("#twitterHome").show();
+    });
+
+    if (userName === null) {
+        $("#login").show();
+        $("#twitterHome").hide();
+    } else {
+        $("#login").hide();
+        $("#twitterHome").show();
+    }
+
     $.getJSON( "http://localhost:8080/userfeed/1", function( data ) {
         var items = [];
         $.each( data, function( key, valObj ) {
