@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="us">
+
+<head>
+    <meta charset="utf-8">
+    <title>Welcome to Twitter Clone</title>
+    <link href="jquery-ui.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.18.1/build/cssgrids/cssgrids-min.css">
+    <style>
+        body {
+            font-family: "Trebuchet MS", sans-serif;
+            margin: 50px;
+        }
+        
+        .demoHeaders {
+            margin-top: 2em;
+        }
+        
+        #dialog-link {
+            padding: .4em 1em .4em 20px;
+            text-decoration: none;
+            position: relative;
+        }
+        
+        #dialog-link span.ui-icon {
+            margin: 0 5px 0 0;
+            position: absolute;
+            left: .2em;
+            top: 50%;
+            margin-top: -8px;
+        }
+        
+        #icons {
+            margin: 0;
+            padding: 0;
+        }
+        
+        #icons li {
+            margin: 2px;
+            position: relative;
+            padding: 4px 0;
+            cursor: pointer;
+            float: left;
+            list-style: none;
+        }
+        
+        #icons span.ui-icon {
+            float: left;
+            margin: 0 4px;
+        }
+        
+        .fakewindowcontain .ui-widget-overlay {
+            position: absolute;
+        }
+        
+        select {
+            width: 200px;
+        }
+    </style>
+
+<script   src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
+    <script lang="javascript">
+        $(document).ready(function() {
+            $.getJSON( "http://localhost:8080/userfeed/1", function( data ) {
+                var items = [];
+                $.each( data, function( key, valObj ) {
+                    addTweetRow(valObj.tweetText, valObj.name, valObj.time);
+                });
+            });
+
+
+        });
+
+function addTweetRow(tweetText, tweetAuthor, tweetDate) {
+        var strVar="";
+        strVar += "                <div class=\"yui3-g\">";
+        strVar += "                        <div class=\"yui3-u\">";
+        strVar += "                            <div class=\"yui3-g\">";
+        strVar += "                                <div class=\"yui3-u-1\">";
+        strVar += tweetText;
+        strVar += "                                <\/div>";
+        strVar += "                                <div class=\"yui3-u-1-2\">" + tweetAuthor + "<\/div>";
+        strVar += "                                <div class=\"yui3-u-1-2\">" + tweetDate + "<\/div>";
+        strVar += "                            <\/div>";
+        strVar += "                        <\/div>     ";
+        strVar += "                <\/div>  ";
+
+       $("#tweetFeed").append(strVar);
+}
+</script>
+
+
+</head>
+
+<body>
+
+    <h1>Welcome to Twitter Clone!</h1>
+    <div class="yui3-g">
+        <div class="yui3-u-1">
+               welcome
+        </div>
+        <div class="yui3-u-2-3">
+            <div id="tweetFeed">
+                <div class="yui3-g">
+                        <div class="yui3-u">
+                            <div class="yui3-g">
+                                <div class="yui3-u-1">
+                                    this is my tweet
+                                </div>
+                                <div class="yui3-u-1-2">tweet author</div>
+                                <div class="yui3-u-1-2">tweet date</div>
+                            </div>
+                        </div>     
+                </div>                 
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>

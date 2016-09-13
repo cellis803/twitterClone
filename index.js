@@ -4,6 +4,7 @@ var moment = require('moment');
 var app = express();
 var path = require("path");
 
+app.use('/', express.static('web'));
 
 app.get('/', function (request, response) {
     response.sendFile(path.join(__dirname + '/home.html'));
@@ -15,21 +16,18 @@ app.get('/createUser', function (request, response) {
     response.send('Welcome to Twitter clone, ' + request.query.name + "!");
 });
 
-app.get('/home', function (request, response) {
-    var userId = 1;
-    var p = tweeterdb.getTweetStreamByUser(userId);
-
-    p.then(
-        val => {
-            var textOut = '';
-            for (row in val) {
-                textOut = textOut + val[row].tweetText + " - " + val[row].name + " - " + val[row].time + " (" + val[row].likeCount + ") <a href='/like'>Like</a><br/>";
-            }
-            response.send(textOut);
+app.get('/userfeed/:userid', function (request, response) {
+    console.log("I'm getting the tweet feed");
+    var userId = request.params.userid;
+    tweeterdb.getTweetStreamByUser(userId).then(
+        tweets => {
+            response.send(tweets);
         }).catch(
         err => {
             //handle all errors
             console.log(err);
+            response.status(500);
+            response.send();
         });
 });
 
@@ -39,20 +37,14 @@ app.listen(8080, function () {
     var p = tweeterdb.initDB();
     p.then(
         val => {
-            tweeterdb.createUser("Joe");
+            //tweeterdb.createUser("Chris");
 
-            var timestamp = moment().format('YYYY-MM-DD H:mm:ss');
-            tweeterdb.createTweet(1, "First tweet message", timestamp, null);
+            //var timestamp = moment().format('YYYY-MM-DD H:mm:ss');
+            //tweeterdb.createTweet(1, "this is my new tweet message", timestamp, null);
 
-            tweeterdb.addFollow(1, 2);
         }).catch(
         err => {
             //handle all errors
             console.log(err);
         });
-
-    tweeterdb.addFollow(1, 2);
-
-    tweeterdb.replyToTweet(1, 'this is my reply', 3);
-    tweeterdb.likeTweet(1, 3);
 });

@@ -154,10 +154,3 @@ module.exports = {
 
     }
 }
-// module.exports.initDB = initDB;
-// module.exports.createUser = createUser;
-// module.exports.createTweet = createTweet;
-// module.exports.addFollow = addFollow;
-// module.exports.getTweetStreamByUser = getTweetStreamByUser;
-// module.exports.replyToTweet = replyToTweet;
-// module.exports.likeTweet = likeTweet;
