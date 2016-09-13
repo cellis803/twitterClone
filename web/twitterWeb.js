@@ -23,37 +23,33 @@ $(document).ready(function() {
 });
 
 function displayTweet(userName){
-    checkUser(userName).then(
-        (data) => {
-            $.getJSON( "http://localhost:8080/userfeed/1", function( data ) {
-                var items = [];
-                $.each( data, function( key, valObj ) {
-                    addTweetRow(valObj.tweetText, valObj.name, valObj.time);
-                });
-            });
-            $("#twitterHome").show();
-            $("#userError").hide();
-        }).catch(err => {    
-            console.log(err);        
-            $("#twitterHome").hide();   
-            $("#userError").show();
-            $("#login").show();        
-        });    
+    var data = checkUser(userName);
+
+    $.getJSON( "http://localhost:8080/userfeed/1", function( data ) {
+        var items = [];
+        $.each( data, function( key, valObj ) {
+            addTweetRow(valObj.tweetText, valObj.name, valObj.time);
+        });
+    });
+    $("#twitterHome").show();
+    $("#userError").hide(); 
 }
 
 function checkUser(userName) {
     var userObj = {
         "name": userName
     };
-    return new Promise(
-        (resolve, reject) => {
-            $.post( "http://localhost:8080/login/", userObj, function( data ) {
-                console.log("returned data: " + data);
-                    resolve(data);
-            }).fail(function() {
-                reject(this);
-            });
-        });
+
+    $.post( "http://localhost:8080/login/", userObj, function(data) {
+        console.log("returned data: " + data);
+    }).done(function(data) {
+        console.log("In done: " + data);
+        return data;
+    }).fail(function() {
+        $("#twitterHome").hide();   
+        $("#userError").show();
+        $("#login").show();   
+    });
 }    
 
 
