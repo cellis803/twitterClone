@@ -22,6 +22,7 @@ app.get('/userfeed/:userid', function (request, response) {
     tweeterdb.getTweetStreamByUser(userId).then(
         tweets => {
             response.send(tweets);
+
         }).catch(
         err => {
             //handle all errors
@@ -47,4 +48,5 @@ app.listen(8080, function () {
             //handle all errors
             console.log(err);
         });
+
 });
