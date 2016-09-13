@@ -11,9 +11,15 @@ app.get('/', function (request, response) {
 
 });
 
-app.get('/createUser', function (request, response) {
-    tweeterdb.createUser(request.query.name);
-    response.send('Welcome to Twitter clone, ' + request.query.name + "!");
+app.get('/login/:name', function (request, response) {
+    tweeterdb.loginUser(request.params.name).then(
+        user => {
+            response.send(user);
+        }).catch(err => {
+                console.log(err);
+                response.status(500);
+                response.send();                
+        });
 });
 
 app.get('/userfeed/:userid', function (request, response) {

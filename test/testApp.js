@@ -1,4 +1,4 @@
-var sum = require('../index');
+var sum = require('../app');
 var db = require('../db');
 
 var chai = require('chai');
