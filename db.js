@@ -46,18 +46,15 @@ module.exports = {
         return new Promise(
             (resolve, reject) => {
                 db.serialize(function () {
-                    var stmt = db.prepare("SELECT * FROM user WHERE user.name = ?");
-
-                    stmt.run(name, function (error) {
-                        if (error) {
-                            console.log(error);
-                            reject(error);
-                        }
-
-                    });
-
-                    stmt.finalize();
-                    resolve();
+                    db.all("SELECT u.rowid from user u where u.name = '" + name + "'", function (err, rows) {
+                            console.log(rows);
+                            if (rows.length === 1) {
+                                resolve(rows);
+                            } else {
+                                reject("User does not exist");
+                            }
+                            
+                        });
                 });
             });
     },    

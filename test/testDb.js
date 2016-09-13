@@ -16,7 +16,19 @@ describe('test getting tweet stream', function () {
 
     it('should get tweets for user', function() {
         return db.getTweetStreamByUser(1).then(function(data){
-            expect(data.length).to.equal(11);
+            expect(data.length).to.equal(9);
+        });
+
+    });
+});
+
+
+describe('test user login', function () {
+
+    it('should get user ID for valid user', function() {
+        return db.loginUser("Chris").then(function(data){
+        expect(data[0].rowid).to.equal(1);
+
         });
 
     });
