@@ -27,7 +27,7 @@ describe('test user login', function () {
 
     it('should get user ID for valid user', function() {
         return db.loginUser("Chris").then(function(data){
-        expect(data[0].rowid).to.equal(1);
+        expect(data.rowid).to.equal(1);
 
         });
 
