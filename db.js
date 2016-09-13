@@ -19,8 +19,6 @@ module.exports = {
                     resolve();
                 });  
             });
-
-        });
     },
 
     
