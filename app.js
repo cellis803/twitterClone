@@ -3,7 +3,12 @@ var tweeterdb = require('./db.js');
 var moment = require('moment');
 var app = express();
 var path = require("path");
+var bodyParser = require('body-parser');
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true  
+}));
 app.use('/', express.static('web'));
 
 app.get('/', function (request, response) {
@@ -11,14 +16,15 @@ app.get('/', function (request, response) {
 
 });
 
-app.get('/login/:name', function (request, response) {
-    tweeterdb.loginUser(request.params.name).then(
+app.post('/login', function(request, response) {
+  
+    tweeterdb.loginUser(request.body.name).then(
         user => {
             response.send(user);
         }).catch(err => {
                 console.log(err);
                 response.status(500);
-                response.send();                
+                response.send(err);                
         });
 });
 

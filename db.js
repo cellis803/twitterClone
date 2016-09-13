@@ -46,7 +46,7 @@ module.exports = {
         return new Promise(
             (resolve, reject) => {
                 db.serialize(function () {
-                    db.all("SELECT u.rowid from user u where u.name = '" + name + "'", function (err, rows) {
+                    db.all("SELECT u.rowid, u.name from user u where u.name = '" + name + "'", function (err, rows) {
                             if (rows.length === 1) {
                                 resolve(rows[0]);
                             } else {
