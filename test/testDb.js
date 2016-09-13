@@ -33,3 +33,11 @@ describe('test user login', function () {
 
     });
 });
+
+describe('test user login', function () {
+
+    it('should return error for invalid user', function() {
+        return expect(db.loginUser("invalid")).to.eventually.be.rejectedWith("User does not exist");
+
+    });
+});
