@@ -1,33 +1,61 @@
 var userName = null;
+var errorPage = $("#userError");
 
 $(document).ready(function() {
 
-    $("#login").hide();
+    $("#login").show();
     $("#twitterHome").hide();
+    $("#userError").hide();
 
     $("#loginButton").click(function() {
-        userName = $("#login").text();
+        userName = $("#nameinput").val();
 
-        $("#login").hide();
-        $("#twitterHome").show();
-    });
-
-    if (userName === null) {
-        $("#login").show();
-        $("#twitterHome").hide();
-    } else {
-        $("#login").hide();
-        $("#twitterHome").show();
-    }
-
-    $.getJSON( "http://localhost:8080/userfeed/1", function( data ) {
-        var items = [];
-        $.each( data, function( key, valObj ) {
-            addTweetRow(valObj.tweetText, valObj.name, valObj.time);
-        });
-    });
-
+        if (userName === null) {
+            $("#login").show();
+            $("#twitterHome").hide();
+            $("#userError").hide();
+        }
+        else {
+            $("#login").hide();
+            displayTweet(userName);
+        }
+    });    
 });
+
+function displayTweet(userName){
+    checkUser(userName).then(
+        (data) => {
+            $.getJSON( "http://localhost:8080/userfeed/1", function( data ) {
+                var items = [];
+                $.each( data, function( key, valObj ) {
+                    addTweetRow(valObj.tweetText, valObj.name, valObj.time);
+                });
+            });
+            $("#twitterHome").show();
+            $("#userError").hide();
+        }).catch(err => {    
+            console.log(err);        
+            $("#twitterHome").hide();   
+            $("#userError").show();
+            $("#login").show();        
+        });    
+}
+
+function checkUser(userName) {
+    var userObj = {
+        "name": userName
+    };
+    return new Promise(
+        (resolve, reject) => {
+            $.post( "http://localhost:8080/login/", userObj, function( data ) {
+                console.log("returned data: " + data);
+                    resolve(data);
+            }).fail(function() {
+                reject(this);
+            });
+        });
+}    
+
 
 function addTweetRow(tweetText, tweetAuthor, tweetDate) {
         var strVar="";
