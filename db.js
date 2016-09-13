@@ -47,7 +47,6 @@ module.exports = {
             (resolve, reject) => {
                 db.serialize(function () {
                     db.all("SELECT u.rowid from user u where u.name = '" + name + "'", function (err, rows) {
-                            console.log(rows);
                             if (rows.length === 1) {
                                 resolve(rows[0]);
                             } else {

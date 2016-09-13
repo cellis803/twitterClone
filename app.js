@@ -12,7 +12,7 @@ app.get('/', function (request, response) {
 });
 
 app.get('/login/:name', function (request, response) {
-    tweeterdb.loginUser(request.query.name).then(
+    tweeterdb.loginUser(request.params.name).then(
         user => {
             response.send(user);
         }).catch(err => {
@@ -20,8 +20,6 @@ app.get('/login/:name', function (request, response) {
                 response.status(500);
                 response.send();                
         });
-
-    response.send('Welcome to Twitter clone, ' + request.query.name + "!");
 });
 
 app.get('/userfeed/:userid', function (request, response) {
