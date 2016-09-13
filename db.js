@@ -31,19 +31,6 @@ module.exports = {
                         console.log("tables have been created");
                         resolve();
                     });  
-                         
-                        // console.log("creating tables");
-
-                        // db.run("CREATE TABLE IF NOT EXISTS user (name TEXT NOT NULL)");
-                        // db.run("CREATE TABLE IF NOT EXISTS tweet (userId INTEGER NOT NULL, tweetText TEXT NOT NULL, time DATETIME NOT NULL, parentTweetId INTEGER, FOREIGN KEY(userId) REFERENCES user(rowid))");
-                        // db.run("CREATE TABLE IF NOT EXISTS userFollows (followsUserId INTEGER NOT NULL, followerUserId INTEGER NOT NULL, PRIMARY KEY (followsUserId, followerUserId), FOREIGN KEY(followsUserId) REFERENCES user(rowid), FOREIGN KEY(followerUserId) REFERENCES user(rowid)) WITHOUT ROWID");
-                        // db.run("CREATE TABLE IF NOT EXISTS tweetReplies (tweetId INTEGER NOT NULL, replyText TEXT NOT NULL, replyUserId INTEGER NOT NULL, FOREIGN KEY(tweetId) REFERENCES tweet(rowid), FOREIGN KEY(replyUserId) REFERENCES user(rowid))");
-                        // db.run("CREATE TABLE IF NOT EXISTS tweetLikes (tweetId INTEGER NOT NULL, likeUserId INTEGER NOT NULL, FOREIGN KEY(tweetId) REFERENCES tweet(rowid), FOREIGN KEY(likeUserId) REFERENCES user(rowid))");
-
-                        // console.log("tables have been created");
-                                                
-                    // resolve();
-
                 });
 
             });
