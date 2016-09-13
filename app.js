@@ -7,7 +7,7 @@ var path = require("path");
 app.use('/', express.static('web'));
 
 app.get('/', function (request, response) {
-    response.sendFile(path.join(__dirname + '/home.html'));
+    response.sendFile(path.join(__dirname + '/login.html'));
 
 });
 
