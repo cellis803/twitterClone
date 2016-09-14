@@ -1,5 +1,5 @@
 var userName = null;
-var errorPage = $("#userError");
+var userId = null;
 
 $(document).ready(function() {
 
@@ -16,10 +16,10 @@ $(document).ready(function() {
             $("#userError").hide();
         }
         else {
-            $("#login").hide();
+            $("#login").hide();;
             displayTweet(userName);
         }
-    });    
+    });       
 });
 
 function displayTweet(userName){
@@ -29,7 +29,7 @@ function displayTweet(userName){
     $.post("http://localhost:8080/login/", userObj, function(data) {
         // console.log("returned data: " + data);
     }).done(function(loggedInUser) {
-                       var userId = loggedInUser.rowid;
+        userId = loggedInUser.rowid;
         $.getJSON("http://localhost:8080/userfeed/" + userId, function( data ) {
             var items = [];
             $.each( data, function( key, valObj ) {
@@ -42,6 +42,27 @@ function displayTweet(userName){
         $("#twitterHome").hide();   
         $("#userError").show();
         $("#login").show();   
+    });
+
+    $("#newTweetButton").click(function() {
+        newTweetText = $("#newTweetText").val();
+        if (newTweetText !== null) {
+            addNewTweet(newTweetText);
+        }
+    });
+}
+
+function addNewTweet(newTweetText){
+    var tweet = {
+        "userid": userId,
+        "tweetText":newTweetText,
+    };
+    $.post("http://localhost:8080/addtweet/", tweet, function(data) {
+        // console.log("returned data: " + data);
+    }).done(function(loggedInUser) {
+        
+   }).fail(function() {
+          
     });
 }
 

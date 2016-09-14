@@ -29,6 +29,20 @@ app.post('/login', function(request, response) {
         });
 });
 
+app.post('/addtweet', function(request, response) {
+    var userid = request.body.userid;
+    var tweetText = request.body.tweetText;
+    var timestamp = moment().format('YYYY-MM-DD H:mm:ss');
+    tweeterdb.createTweet(userid, tweetText, timestamp, null).then(
+        () => {
+            response.send("success added");
+        }).catch(err => {
+                console.log(err);
+                response.status(500);
+                response.send(err);                
+        });
+});
+
 app.get('/userfeed/:userid', function (request, response) {
     console.log("I'm getting the tweet feed");
     var userId = request.params.userid;
