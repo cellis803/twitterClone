@@ -23,7 +23,12 @@ $(document).ready(function() {
 });
 
 function displayTweet(userName){
-   checkUser(userName).done(function(loggedInUser) {
+    var userObj = {
+        "name": userName
+    };
+    $.post("http://localhost:8080/login/", userObj, function(data) {
+        // console.log("returned data: " + data);
+    }).done(function(loggedInUser) {
                        var userId = loggedInUser.rowid;
         $.getJSON("http://localhost:8080/userfeed/" + userId, function( data ) {
             var items = [];
@@ -33,26 +38,12 @@ function displayTweet(userName){
         });
         $("#twitterHome").show();
         $("#userError").hide(); 
-   });
-
-}
-
-function checkUser(userName) {
-    var userObj = {
-        "name": userName
-    };
-
-    return $.post("http://localhost:8080/login/", userObj, function(data) {
-        console.log("returned data: " + data);
-    }).done(function(data) {
-        console.log("In done: " + data);
-    }).fail(function() {
+   }).fail(function() {
         $("#twitterHome").hide();   
         $("#userError").show();
         $("#login").show();   
     });
-}    
-
+}
 
 function addTweetRow(tweetText, tweetAuthor, tweetDate) {
         var strVar="";
