@@ -10,6 +10,7 @@ app.use(bodyParser.urlencoded({
     extended: true  
 }));
 app.use('/', express.static('web'));
+app.use('/styles', express.static('web/styles'));
 
 app.get('/', function (request, response) {
     response.sendFile(path.join(__dirname + '/login.html'));

@@ -23,16 +23,18 @@ $(document).ready(function() {
 });
 
 function displayTweet(userName){
-    var data = checkUser(userName);
-
-    $.getJSON( "http://localhost:8080/userfeed/1", function( data ) {
-        var items = [];
-        $.each( data, function( key, valObj ) {
-            addTweetRow(valObj.tweetText, valObj.name, valObj.time);
+   checkUser(userName).done(function(loggedInUser) {
+                       var userId = loggedInUser.rowid;
+        $.getJSON("http://localhost:8080/userfeed/" + userId, function( data ) {
+            var items = [];
+            $.each( data, function( key, valObj ) {
+                addTweetRow(valObj.tweetText, valObj.name, valObj.time);
+            });
         });
-    });
-    $("#twitterHome").show();
-    $("#userError").hide(); 
+        $("#twitterHome").show();
+        $("#userError").hide(); 
+   });
+
 }
 
 function checkUser(userName) {
@@ -40,11 +42,10 @@ function checkUser(userName) {
         "name": userName
     };
 
-    $.post( "http://localhost:8080/login/", userObj, function(data) {
+    return $.post("http://localhost:8080/login/", userObj, function(data) {
         console.log("returned data: " + data);
     }).done(function(data) {
         console.log("In done: " + data);
-        return data;
     }).fail(function() {
         $("#twitterHome").hide();   
         $("#userError").show();
