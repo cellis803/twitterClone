@@ -10,12 +10,6 @@ app.use(bodyParser.urlencoded({
     extended: true  
 }));
 app.use('/', express.static('web'));
-app.use('/styles', express.static('web/styles'));
-
-app.get('/', function (request, response) {
-    response.sendFile(path.join(__dirname + '/login.html'));
-
-});
 
 app.post('/login', function(request, response) {
   
@@ -65,10 +59,6 @@ app.listen(8080, function () {
     var p = tweeterdb.initDB();
     p.then(
         val => {
-            //tweeterdb.createUser("Chris");
-
-            //var timestamp = moment().format('YYYY-MM-DD H:mm:ss');
-            //tweeterdb.createTweet(1, "this is my new tweet message", timestamp, null);
 
         }).catch(
         err => {
