@@ -1,24 +1,29 @@
 var userName = null;
+var errorPage = $("#userError");
 
 $(document).ready(function() {
 
-    $("#login").hide();
+    $("#login").show();
     $("#twitterHome").hide();
+    $("#userError").hide();
 
     $("#loginButton").click(function() {
-        userName = $("#login").text();
+        userName = $("#nameinput").val();
 
-        $("#login").hide();
-        $("#twitterHome").show();
-    });
+        if (userName === null) {
+            $("#login").show();
+            $("#twitterHome").hide();
+            $("#userError").hide();
+        }
+        else {
+            $("#login").hide();
+            displayTweet(userName);
+        }
+    });    
+});
 
-    if (userName === null) {
-        $("#login").show();
-        $("#twitterHome").hide();
-    } else {
-        $("#login").hide();
-        $("#twitterHome").show();
-    }
+function displayTweet(userName){
+    var data = checkUser(userName);
 
     $.getJSON( "http://localhost:8080/userfeed/1", function( data ) {
         var items = [];
@@ -26,8 +31,27 @@ $(document).ready(function() {
             addTweetRow(valObj.tweetText, valObj.name, valObj.time);
         });
     });
+    $("#twitterHome").show();
+    $("#userError").hide(); 
+}
 
-});
+function checkUser(userName) {
+    var userObj = {
+        "name": userName
+    };
+
+    $.post( "http://localhost:8080/login/", userObj, function(data) {
+        console.log("returned data: " + data);
+    }).done(function(data) {
+        console.log("In done: " + data);
+        return data;
+    }).fail(function() {
+        $("#twitterHome").hide();   
+        $("#userError").show();
+        $("#login").show();   
+    });
+}    
+
 
 function addTweetRow(tweetText, tweetAuthor, tweetDate) {
         var strVar="";
