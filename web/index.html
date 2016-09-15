@@ -62,55 +62,13 @@
     <script src="scripts/react.js"></script>
     <script src="scripts/react-dom.js"></script>
     <script src="scripts/browser.min.js"></script>
-    <script src="twitterWeb.js"></script>
+
+
 </head>
 
 <body>
-
-    <div id="login">
-            <h1>this is the login page</h1>
-            Login with your name: <input type="text" id="nameinput" name="name" />
-            <input id="loginButton" type="submit" value="Login" />
-    </div>
-
-    <div id="userError">
-            <h1 style="color:red;">Login Failed. Please enter user name again.</h1>
-     </div>
-
-    <div id="twitterHome">
-        <h1>Welcome to Twitter Clone!</h1>
-        <div class="yui3-g">
-            <div class="yui3-u-1">
-                welcome
-            </div>
-            <div class="yui3-u-2-3">
-                <div id="tweetFeed">
-                    <div class="yui3-g">
-                            <div class="yui3-u">
-                                <div class="yui3-g">
-                                    <div class="yui3-u-1">
-                                        this is my tweet
-                                    </div>
-                                    <div class="yui3-u-1-2">tweet author</div>
-                                    <div class="yui3-u-1-2">tweet date</div>
-                                </div>
-                            </div>     
-                    </div>                 
-                </div>
-            </div>
-        </div>
-
-        <hr>
-
-        <div id="addnewtweet">
-            Add new Tweet Message: <input type="text" id="newTweetText" />
-            <input id="newTweetButton" type="submit" value="Add" />
-        </div> 
-    
-    </div>
-
-
-
+    <div id="twitterClone" />
 </body>
-
+    <!--<script src="test.js" ></script>-->
+    <script src="twitterWeb.jsx" type="text/babel"></script>
 </html>
